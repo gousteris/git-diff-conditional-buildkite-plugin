@@ -4,9 +4,11 @@ set -euo pipefail
 set +u
 # Check if the plugin is disabled
 if [[ -n "$BUILDKITE_PLUGIN_GIT_DIFF_CONDITIONAL_DISABLE_PLUGIN" ]]; then
-  echo "Plugin disable flag detected, passing entire pipeline to buildkite"
-  buildkite-agent pipeline upload "$BUILDKITE_PLUGIN_GIT_DIFF_CONDITIONAL_DYNAMIC_PIPELINE"
-  exit 0
+  if [[ "$BUILDKITE_PLUGIN_GIT_DIFF_CONDITIONAL_DISABLE_PLUGIN" == "true" ]]; then
+    echo "Plugin disable flag detected, passing entire pipeline to buildkite"
+    buildkite-agent pipeline upload "$BUILDKITE_PLUGIN_GIT_DIFF_CONDITIONAL_DYNAMIC_PIPELINE"
+    exit 0
+  fi
 fi
 set -u
 
